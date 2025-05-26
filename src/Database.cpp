@@ -211,13 +211,13 @@ bool Database::searchById(unsigned int id) const
                       { return p.getId() == id; });
   if (iter != products.end())
   {
-    cout << "Найденный товар: " << endl;
+    cout << "Товар с таким кодом существует: " << endl;
     iter->display();
     return true;
   }
   else
   {
-    cout << "Товар не найден" << endl;
+    cout << "Товар с таким кодом не существует" << endl;
     return false;
   }
 }

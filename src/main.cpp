@@ -65,9 +65,10 @@ void addNewProduct(Database &db)
     }
 
     isIDExists = db.searchById(id);
-    if (isIDExists)
+    if (!isIDExists)
     {
-        cerr << "Такой код уже существует" << endl;
+        cout << "Можете продолжить процедуру добавления товара" << endl;
+    } else {
         return;
     }
     cin.ignore();
