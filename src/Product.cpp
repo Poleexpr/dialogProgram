@@ -6,7 +6,7 @@
 using namespace std;
 
 // конструктор
-Product::Product(unsigned int c, const string n, const string t, float bp, float d)
+Product::Product(unsigned int c, const string &n, const string &t, float bp, float d)
     : id(c), name(n), type(t), basePrice(bp), discount(d)
 {
     calculateSalePrice();

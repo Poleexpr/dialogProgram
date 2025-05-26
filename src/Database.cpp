@@ -34,7 +34,7 @@ bool Database::isDatabaseLoad()
 }
 
 // метод загрузки БД из файла
-bool Database::load(const string filename)
+bool Database::load(const string &filename)
 {
   ifstream file(filename);
 
@@ -58,8 +58,9 @@ bool Database::load(const string filename)
     // считаем строки, чтобы при необходимости отловить, где именно возникла ошибка
     line_num++;
 
-    if (line.empty())
+    if (line.empty()){
       continue;
+    }
 
     try
     {
@@ -74,14 +75,18 @@ bool Database::load(const string filename)
       }
 
       // вылидируем данные
-      if (items.size() != 5)
+      if (items.size() != 5){
         throw runtime_error("В файле данных должно быть 5 параметров");
-      if (!isNum(items[0]))
+      }
+      if (!isNum(items[0])){
         throw runtime_error("Код должен быть числом");
-      if (!isNum(items[3]))
+      }
+      if (!isNum(items[3])){
         throw runtime_error("Цена должна быть числом");
-      if (!isNum(items[4]))
+      }
+      if (!isNum(items[4])){
         throw runtime_error("Скидка должна быть числом");
+      }
 
       // конвертируем в нужный формат id, цену и скидку
       unsigned int id = stoi(items[0]);
@@ -137,7 +142,7 @@ void Database::display()
 }
 
 // метод добавления новой записи
-void Database::addProduct(unsigned int id, const string name, const string type, float basePrice, float discount)
+void Database::addProduct(unsigned int id, const string &name, const string &type, float basePrice, float discount)
 {
   products.push_back(Product(id, name, type, basePrice, discount));
   cout << "Товар добавлен" << endl;
@@ -165,7 +170,7 @@ void Database::removeProduct(unsigned int id)
 }
 
 // метод сохранения БД в файл
-bool Database::saveToFile(const string filename) const
+bool Database::saveToFile(const string &filename) const
 {
   string path = "../data/";
   string fullPath = path + filename;
@@ -244,7 +249,7 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
 }
 
 // метод добавления скидки по акции
-void Database::addDiscount(const vector<string> types, float additionalDiscount)
+void Database::addDiscount(const vector<string>& types, float additionalDiscount)
 {
   unordered_set<string> matchTypes;
   // считаем количество совпадений по типам, чтобы сообщить пользователю найдены ли акционные товары
