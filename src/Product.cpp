@@ -6,8 +6,8 @@
 using namespace std;
 
 // конструктор
-Product::Product(unsigned int c, const string n, const string t, float bp, float d)
-    : id(c), name(n), type(t), basePrice(bp), discount(d)
+Product::Product(unsigned int id, const string &name, const string &type, float basePrise, float discount)
+    : id(id), name(name), type(type), basePrice(basePrice), discount(discount)
 {
     calculateSalePrice();
 }
@@ -32,9 +32,9 @@ float Product::getSalePrice() const { return salePrice; }
   calculateSalePrice();
 }*/
 
-void Product::setDiscount(float d)
+void Product::setDiscount(float discount)
 {
-    discount = d;
+    discount = discount;
     calculateSalePrice();
 }
 
