@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+          "label": "Build with g++",
+          "type": "shell",
+          "command": "g++",
+          "args": [
+              "-std=c++11",
+              "-g",
+              "main.cpp",
+              "-o",
+              "dialogProgram"
+          ],
+          "group": {
+              "kind": "build",
+              "isDefault": true
+          },
+          "problemMatcher": []
+      }
+  ]
+}

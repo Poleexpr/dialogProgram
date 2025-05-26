@@ -1,0 +1,3 @@
+/Users/anya/Desktop/dialogProgram/build/CMakeFiles/dialogProgram.dir
+/Users/anya/Desktop/dialogProgram/build/CMakeFiles/edit_cache.dir
+/Users/anya/Desktop/dialogProgram/build/CMakeFiles/rebuild_cache.dir
