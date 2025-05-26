@@ -52,6 +52,7 @@ void addNewProduct(Database &db)
     unsigned int id;
     string name, type;
     float basePrice, discount;
+    bool isIDExists;
 
     // вводим и валидируем код
     cout << "Введите код товара: ";
@@ -63,7 +64,8 @@ void addNewProduct(Database &db)
         return;
     }
 
-    if (db.searchById(id))
+    isIDExists = db.searchById(id);
+    if (isIDExists)
     {
         cerr << "Такой код уже существует" << endl;
         return;
@@ -117,6 +119,12 @@ void addNewProduct(Database &db)
 void removeProduct(Database &db)
 {
     unsigned int id;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
+
     cout << "Введите код, чтобы удалить товар: ";
     if (!(cin >> id))
     {
@@ -130,9 +138,14 @@ void removeProduct(Database &db)
 }
 
 // функция сохранения БД в файл
-void saveToFile(const Database &db)
+void saveToFile(Database &db)
 {
     string filename;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
 
     cout << "Введите имя нового файла с расширением: ";
     getline(cin, filename);
@@ -154,9 +167,14 @@ void saveToFile(const Database &db)
 }
 
 // функция поиска по коду товара
-void searchById(const Database &db)
+void searchById(Database &db)
 {
     unsigned int id;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
 
     cout << "Введите код, чтобы найти товар: ";
     if (!(cin >> id))
@@ -171,9 +189,14 @@ void searchById(const Database &db)
 }
 
 // функция выборки по диапазону цен за штуку
-void selectByPriceRange(const Database &db)
+void selectByPriceRange(Database &db)
 {
     float minPrice, maxPrice;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
 
     cout << "Введите минимальную цену за штуку: ";
     if (!(cin >> minPrice) || minPrice <= 0)
@@ -201,6 +224,11 @@ void addDiscount(Database &db)
     vector<string> types;
     string type;
     float discount;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
 
     cout << "Введите типы товаров, к которым будет применена акционная скидка (или введите 'далее' для продолжения): " << endl;
     while (true)
@@ -234,6 +262,12 @@ void addDiscount(Database &db)
 void removeProductsBelowThreshold(Database &db)
 {
     float threshold;
+
+    if (!db.isDatabaseLoad())
+    {
+        return;
+    }
+
     cout << "Введите пороговое значение цены продажи: ";
     if (!(cin >> threshold) || threshold <= 0)
     {
@@ -243,7 +277,7 @@ void removeProductsBelowThreshold(Database &db)
         return;
     }
 
-    db.removeProductsBelowSalePrice(threshold);
+    db.removeProductsBelowThreshold(threshold);
 }
 
 int main()

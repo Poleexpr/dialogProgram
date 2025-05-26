@@ -14,6 +14,7 @@ private:
     bool isNum(const string &str);
 
 public:
+    bool isDatabaseLoad();
     bool load(const string filename);
     void display();
     void addProduct(unsigned int id, const string name, const string type, float basePrice, float discount);
@@ -23,5 +24,5 @@ public:
     bool searchById(unsigned int id) const;
     void selectByPriceRange(float minPrice, float maxPrice) const;
     void addDiscount(const vector<string> types, float additionalDiscount);
-    void removeProductsBelowSalePrice(float threshold);
+    void removeProductsBelowThreshold(float threshold);
 };

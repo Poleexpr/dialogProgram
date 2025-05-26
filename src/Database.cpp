@@ -23,6 +23,16 @@ bool Database::isNum(const string &str)
   }
 }
 
+bool Database::isDatabaseLoad()
+{
+  if (products.empty())
+  {
+    cout << "Пожалуйста, загрузите/заполните БД" << endl;
+    return false;
+  }
+  return true;
+}
+
 // метод загрузки БД из файла
 bool Database::load(const string filename)
 {
@@ -109,12 +119,10 @@ bool Database::load(const string filename)
 void Database::display()
 {
   // проверяем загружена/заполнена ли БД
-  if (products.empty())
+  if (!isDatabaseLoad())
   {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
     return;
   }
-
   // выводим заголовки таблицы
   cout << setw(5) << right << "Code" << " | "
        << setw(40) << left << "Name"
@@ -122,11 +130,6 @@ void Database::display()
   cout << string(115, '-') << endl;
 
   // проходимся циклом по продуктам и выводим каждый в формате таблицы
-  /*for (auto i = products.begin(); i != products.end(); i++)
-  {
-    auto &product = *i;
-    product.display();
-  }*/
   for (size_t i = 0; i < products.size(); i++)
   {
     products[i].display();
@@ -143,12 +146,6 @@ void Database::addProduct(unsigned int id, const string name, const string type,
 // метод удаления записи
 void Database::removeProduct(unsigned int id)
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return;
-  }
-
   unsigned int countProducts = 0;
 
   for (size_t i = 0; i < products.size(); i++)
@@ -191,11 +188,11 @@ bool Database::saveToFile(const string filename) const
 // метод сортировки БД по коду товара
 void Database::sortById()
 {
-  if (products.empty())
+  if (!isDatabaseLoad())
   {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
     return;
   }
+
   // применяем лямбда-функцию и встроенный алгоритм сортировки
   sort(products.begin(), products.end(),
        [](const Product &a, const Product &b)
@@ -208,11 +205,6 @@ void Database::sortById()
 // метод поиска записи по коду товара
 bool Database::searchById(unsigned int id) const
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return false;
-  }
   // применяем лямбда-функцию и встроенный алгоритм поиска
   auto iter = find_if(products.begin(), products.end(),
                       [id](const Product &p)
@@ -233,13 +225,6 @@ bool Database::searchById(unsigned int id) const
 // метод выборки товаров, попадающих в заданный диапазон цен за штуку
 void Database::selectByPriceRange(float minPrice, float maxPrice) const
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return;
-  }
-
-  // vector<Product> suitableProducts;
   unsigned int countProducts = 0;
 
   for (size_t i = 0; i < products.size(); i++)
@@ -249,7 +234,6 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
     {
       products[i].display();
       countProducts++;
-      // suitableProducts.push_back(products[i]);
     }
   }
 
@@ -257,31 +241,11 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
   {
     cout << "Товары в указанном диапазоне цен не найдены" << endl;
   }
-
-  /*if (suitableProducts.empty())
-  {
-    cout << "Товары в указанном диапазоне цен не найдены" << endl;
-  }
-  else
-  {
-    cout << "Подходящие товары: " << endl;
-
-    for (size_t i = 0; i < suitableProducts.size(); i++)
-    {
-      suitableProducts[i].display();
-    }
-  }*/
 }
 
 // метод добавления скидки по акции
 void Database::addDiscount(const vector<string> types, float additionalDiscount)
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return;
-  }
-
   // считаем количество совпадений по типам, чтобы сообщить пользователю найдены ли акционные товары
   unsigned int countProducts = 0;
   for (size_t i = 0; i < products.size(); i++)
@@ -305,14 +269,8 @@ void Database::addDiscount(const vector<string> types, float additionalDiscount)
 }
 
 // метод удаления товаров, цена продажи которых ниже заданного порога
-void Database::removeProductsBelowSalePrice(float threshold)
+void Database::removeProductsBelowThreshold(float threshold)
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return;
-  }
-
   unsigned int countProducts = 0;
   size_t i = 0;
   while (i < products.size())
