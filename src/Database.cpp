@@ -246,12 +246,15 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
 // метод добавления скидки по акции
 void Database::addDiscount(const vector<string> types, float additionalDiscount)
 {
+  unordered_set<string> matchTypes;
   // считаем количество совпадений по типам, чтобы сообщить пользователю найдены ли акционные товары
   unsigned int countProducts = 0;
+  
   for (size_t i = 0; i < products.size(); i++)
   {
     if (find(types.begin(), types.end(), products[i].getType()) != types.end())
     {
+      matchTypes.insert(products[i].getType());
       float newDiscount = products[i].getDiscount() + additionalDiscount;
       products[i].setDiscount(newDiscount);
       countProducts++;
@@ -264,7 +267,11 @@ void Database::addDiscount(const vector<string> types, float additionalDiscount)
   }
   else
   {
-    cout << "Скидка применена" << endl;
+    cout << "Скидка применена для: " << endl;
+    for (auto iter = matchTypes.begin(); iter != matchTypes.end(); iter++){
+      cout << *iter << endl;
+    }
+
   }
 }
 
