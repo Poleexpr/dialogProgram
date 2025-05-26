@@ -161,21 +161,15 @@ void Database::removeProduct(unsigned int id)
     }
   }
 
-  if(countProducts == 0){
-  cout << "Товар с таким кодом не существует" << endl;
+  if (countProducts == 0)
+  {
+    cout << "Товар с таким кодом не существует" << endl;
   }
 }
 
 // метод сохранения БД в файл
 bool Database::saveToFile(const string filename) const
 {
-  if (products.empty())
-  {
-    cout << "Пожалуйста, загрузите/заполните БД" << endl;
-    return false;
-    ;
-  }
-
   string path = "../data/";
   string fullPath = path + filename;
 
@@ -245,7 +239,7 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
     return;
   }
 
-  //vector<Product> suitableProducts;
+  // vector<Product> suitableProducts;
   unsigned int countProducts = 0;
 
   for (size_t i = 0; i < products.size(); i++)
@@ -255,7 +249,7 @@ void Database::selectByPriceRange(float minPrice, float maxPrice) const
     {
       products[i].display();
       countProducts++;
-      //suitableProducts.push_back(products[i]);
+      // suitableProducts.push_back(products[i]);
     }
   }
 
@@ -318,7 +312,7 @@ void Database::removeProductsBelowSalePrice(float threshold)
     cout << "Пожалуйста, загрузите/заполните БД" << endl;
     return;
   }
-  
+
   unsigned int countProducts = 0;
   size_t i = 0;
   while (i < products.size())
