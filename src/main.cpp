@@ -10,6 +10,13 @@
 
 using namespace std;
 
+// вспомогательная функция для удаления пробелов в начале и в конце строки при вводе 
+string trim(const string &s) {
+    auto start = s.find_first_not_of(" \t\n\r\f\v");
+    auto end = s.find_last_not_of(" \t\n\r\f\v");
+    return (start == string::npos) ? "" : s.substr(start, end - start + 1);
+}
+
 // функция вывода меню
 void displayMenu()
 {
@@ -113,7 +120,7 @@ void addNewProduct(Database &db)
         return;
     }
 
-    db.addProduct(id, name, type, basePrice, discount);
+    db.addProduct(id, trim(name), trim(type), basePrice, discount);
 }
 
 // функция удаления по коду товара
@@ -244,10 +251,10 @@ void addDiscount(Database &db)
         }
         if (type == "далее")
             break;
-        types.push_back(type);
+        types.push_back(trim(type));
     }
 
-    cout << "Введите дополнительную скидку (%): " << endl;
+    cout << "Введите дополнительную скидку (%): ";
     if (!(cin >> discount) || discount < 0 || discount > 100)
     {
         cin.clear();
