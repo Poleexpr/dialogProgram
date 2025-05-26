@@ -10,8 +10,9 @@
 
 using namespace std;
 
-// вспомогательная функция для удаления пробелов в начале и в конце строки при вводе 
-string trim(const string &s) {
+// вспомогательная функция для удаления пробелов в начале и в конце строки при вводе
+string trim(const string &s)
+{
     auto start = s.find_first_not_of(" \t\n\r\f\v");
     auto end = s.find_last_not_of(" \t\n\r\f\v");
     return (start == string::npos) ? "" : s.substr(start, end - start + 1);
@@ -75,7 +76,9 @@ void addNewProduct(Database &db)
     if (!isIDExists)
     {
         cout << "Можете продолжить процедуру добавления товара" << endl;
-    } else {
+    }
+    else
+    {
         return;
     }
     cin.ignore();
@@ -83,6 +86,7 @@ void addNewProduct(Database &db)
     // вводим и валидируем название
     cout << "Введите название: ";
     getline(cin, name);
+    name = trim(name);
 
     if (name.empty())
     {
@@ -93,6 +97,7 @@ void addNewProduct(Database &db)
     // вводим и валидируем тип
     cout << "Введите тип: ";
     getline(cin, type);
+    type = trim(type);
 
     if (type.empty())
     {
@@ -120,19 +125,18 @@ void addNewProduct(Database &db)
         return;
     }
 
-    db.addProduct(id, trim(name), trim(type), basePrice, discount);
+    db.addProduct(id, name, type, basePrice, discount);
 }
 
 // функция удаления по коду товара
 void removeProduct(Database &db)
 {
-    unsigned int id;
-
     if (!db.isDatabaseLoad())
     {
         return;
     }
 
+    unsigned int id;
     cout << "Введите код, чтобы удалить товар: ";
     if (!(cin >> id))
     {
@@ -148,13 +152,12 @@ void removeProduct(Database &db)
 // функция сохранения БД в файл
 void saveToFile(Database &db)
 {
-    string filename;
-
     if (!db.isDatabaseLoad())
     {
         return;
     }
 
+    string filename;
     cout << "Введите имя нового файла с расширением: ";
     getline(cin, filename);
 
@@ -199,13 +202,12 @@ void searchById(Database &db)
 // функция выборки по диапазону цен за штуку
 void selectByPriceRange(Database &db)
 {
-    float minPrice, maxPrice;
-
     if (!db.isDatabaseLoad())
     {
         return;
     }
 
+    float minPrice, maxPrice;
     cout << "Введите минимальную цену за штуку: ";
     if (!(cin >> minPrice) || minPrice <= 0)
     {
@@ -223,35 +225,51 @@ void selectByPriceRange(Database &db)
         return;
     }
 
+    if (minPrice > maxPrice)
+    {
+        cerr << "Минимальная цена должна быть меньше максимальной" << endl;
+        return;
+    }
+
     db.selectByPriceRange(minPrice, maxPrice);
 }
 
 // функция добавления скидки по акции
 void addDiscount(Database &db)
 {
-    vector<string> types;
-    string type;
-    float discount;
-
     if (!db.isDatabaseLoad())
     {
         return;
     }
+
+    vector<string> types;
+    string type;
+    float discount;
 
     cout << "Введите типы товаров, к которым будет применена акционная скидка (или введите 'далее' для продолжения): " << endl;
     while (true)
     {
         cout << "Тип: ";
         getline(cin, type);
+        type = trim(type);
+
+        if (type == "далее")
+        {
+            if (types.empty())
+            {
+                cout << "Должен быть указан хотя бы один тип" << endl;
+                continue;
+            }
+            break;
+        }
 
         if (type.empty())
         {
             cerr << "Тип не должен быть пустым" << endl;
-            return;
+            continue;
         }
-        if (type == "далее")
-            break;
-        types.push_back(trim(type));
+
+        types.push_back(type);
     }
 
     cout << "Введите дополнительную скидку (%): ";
@@ -269,13 +287,12 @@ void addDiscount(Database &db)
 // функция для удаления товаров с ценой ниже заданного порога
 void removeProductsBelowThreshold(Database &db)
 {
-    float threshold;
-
     if (!db.isDatabaseLoad())
     {
         return;
     }
 
+    float threshold;
     cout << "Введите пороговое значение цены продажи: ";
     if (!(cin >> threshold) || threshold <= 0)
     {
@@ -292,7 +309,6 @@ int main()
 {
     Database db;
     int choice;
-    string filename;
 
     // установка локали для корректного отображения кириллицы
     setlocale(LC_ALL, "Russian");
@@ -300,7 +316,13 @@ int main()
     while (true)
     {
         displayMenu();
-        cin >> choice;
+        if (!(cin >> choice))
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Ошибка: введите число от 0 до 10\n";
+            continue;
+        }
         cin.ignore();
 
         switch (choice)
