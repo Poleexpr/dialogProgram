@@ -318,13 +318,15 @@ void Database::removeProductsBelowSalePrice(float threshold)
     cout << "Пожалуйста, загрузите/заполните БД" << endl;
     return;
   }
-
-  unsigned int i = 0;
+  
+  unsigned int countProducts = 0;
+  size_t i = 0;
   while (i < products.size())
   {
     if (products[i].getSalePrice() < threshold)
     {
       products.erase(products.begin() + i);
+      countProducts++;
     }
     else
     {
@@ -332,7 +334,7 @@ void Database::removeProductsBelowSalePrice(float threshold)
     }
   }
 
-  if (i == 0)
+  if (countProducts == 0)
   {
     cout << "Товары не найдены" << endl;
   }
