@@ -10,9 +10,8 @@
 
 using namespace std;
 
-// вспомогательная функция для удаления пробелов в начале и в конце строки при вводе
-string trim(const string &s)
-{
+// вспомогательная функция для удаления пробелов в начале и в конце строки при вводе 
+string trim(const string &s) {
     auto start = s.find_first_not_of(" \t\n\r\f\v");
     auto end = s.find_last_not_of(" \t\n\r\f\v");
     return (start == string::npos) ? "" : s.substr(start, end - start + 1);
@@ -76,9 +75,7 @@ void addNewProduct(Database &db)
     if (!isIDExists)
     {
         cout << "Можете продолжить процедуру добавления товара" << endl;
-    }
-    else
-    {
+    } else {
         return;
     }
     cin.ignore();

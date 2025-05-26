@@ -17,7 +17,7 @@ private:
     void calculateSalePrice();
 
 public:
-    Product(unsigned int id, const string &name, const string &type, float basePrice, float discount);
+    Product(unsigned int c, const string n, const string t, float bp, float d);
 
     unsigned int getId() const;
     const string getName() const;
